@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Site Metas -->
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="../images/favicon.png" type="">
+    <title><%= titlePage %></title>
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="../css/style.css" rel="stylesheet"/>
+    <!-- responsive style -->
+    <link href="../css/responsive.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">نام محصول</th>
+                    <th scope="col">قیمت</th>
+                    <th scope="col">عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if (products.length > 0) { %>
+                    <% for (let item of products) { %>
+                        <tr class="row-tr">
+                            <th scope="row" class="unique-id"></th>
+                            <td class="itemTitle"><%= item.title %></td>
+                            <td class="itemPrice"><%= item.price %></td>
+                            <td>
+                                <form action="/admin/products" method="post">
+                                    <input type="hidden" value="<%= item._id %>" name="productId">
+                                    <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                                </form>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-warning btn-sm updated">بروزرسانی</button>
+                                <div class="form-data d-none">
+                                    <form action="/admin/update" method="post">
+                                        <input type="hidden" value="<%= item._id %>" name="productUpdated">
+                                        <div class="d-flex" style="width: 400px;">
+                                            <input type="text" value="" class="form-control changeName"
+                                                   placeholder="name" name="productTitle">
+                                            <input type="text" value="" class="form-control changePrice"
+                                                   placeholder="price" name="productPrice">
+                                            <button type="submit" class="btn btn-warning btn-sm accept-button">ثبت
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    let button = document.querySelectorAll('.updated');
+    let formData = document.querySelectorAll('.form-data');
+    let acceptButton = document.querySelectorAll('.accept-button');
+    let changeName = document.querySelectorAll('.changeName');
+    let changePrice = document.querySelectorAll('.changePrice');
+    let itemName = document.querySelectorAll('.itemTitle');
+    let ItemPrice = document.querySelectorAll('.itemPrice');
+    let rowData = document.querySelectorAll('.row-tr');
+    let uniqueID = document.querySelectorAll('.unique-id');
+
+    window.addEventListener('load' , function () {
+        for (let i = 0; i < rowData.length;i++){
+            uniqueID[i].textContent = i + 1
+        }
+    })
+
+    for (let i = 0; i < button.length; i++) {
+        button[i].addEventListener('click', function () {
+            formData[i].classList.remove('d-none');
+            button[i].classList.add('d-none');
+        });
+
+        acceptButton[i].addEventListener('click', function () {
+            formData[i].classList.add('d-none');
+            button[i].classList.remove('d-none');
+
+            if (changeName[i].value === '' || changePrice[i].value === '')
+                return;
+
+            itemName[i].textContent = changeName[i].value;
+            ItemPrice[i].textContent = changePrice[i].value;
+        })
+    }
+
+</script>
+</body>
+</html>
